@@ -28,4 +28,6 @@ bin/
 ### Mac OS ###
 .DS_Store
 /lox_programs/
-.idea
+.idea/
+
+runlox.sh

@@ -225,15 +225,24 @@ public class Scanner {
     }
 
     private void multilineComment(){
-        while(!(peek() == '*' && peekNext() == '/') && !isAtEnd()) {
-            if(peek() == '\n') line++;
-            advance();
-        }
-        if  (isAtEnd()) {
-            Lox.error(line, "Unterminated comment.");
-        }
+        int depth = 1;
 
-        advance();
-        advance();
+        while(depth>0 && !isAtEnd()){
+            if (peek() == '\n') line++;
+            if (peek() == '/' && peekNext() == '*'){
+                advance();
+                advance();
+                depth++;
+            }else if (peek() == '*' && peekNext() == '/'){
+                advance();
+                advance();
+                depth--;
+            } else {
+                advance();
+            }
+        }
+        if(depth>0){
+            Lox.error(line, "Unterminated multiline comment.");
+        }
     }
 }
