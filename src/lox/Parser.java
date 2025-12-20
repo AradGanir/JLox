@@ -150,4 +150,12 @@ public class Parser {
 
         throw(error(peek(), "Expect expression"));
     }
+
+    Expr parse(){
+        try {
+            return expression();
+        } catch(ParseError error) {
+            return null;
+        }
+    }
 }
