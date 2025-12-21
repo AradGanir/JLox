@@ -71,4 +71,14 @@ public class Interpreter implements Expr.Visitor<Object> {
         if(a == null) return false;
         return a.equals(b);
     }
+    //unary
+    private void checkNumberOperand(Token operator, Object operand) {
+        if (operand instanceof Double) return;
+        throw new RuntimeError(operator, "Operand must be a number");
+    }
+
+    private void checkNumberOperand(Token operator, Object operand1, Object operand2) {
+        if (operand1 instanceof Double && operand2 instanceof Double) return;
+        throw new RuntimeError(operator, "Operands must be a number");
+    }
 }
