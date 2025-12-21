@@ -14,6 +14,7 @@ public class Interpreter implements Expr.Visitor<Object> {
 
         switch(expr.operator.type){
             case MINUS:
+                checkNumberOperand(expr.operator, right);
                 return -(double)right;
             case BANG:
                 return !isTruthy(right);
@@ -30,20 +31,28 @@ public class Interpreter implements Expr.Visitor<Object> {
             case BANG_EQUAL: return !isEqual(left, right);
             case EQUAL_EQUAL: return isEqual(left, right);
             case GREATER:
+                checkNumberOperand(expr.operator, left, right);
                 return (double)left > (double)right;
             case GREATER_EQUAL:
+                checkNumberOperand(expr.operator, left, right);
                 return (double)left >= (double)right;
             case LESS:
+                checkNumberOperand(expr.operator, left, right);
                 return (double)left < (double)right;
             case LESS_EQUAL:
+                checkNumberOperand(expr.operator, left, right);
                 return (double)left <= (double)right;
             case MINUS:
+                checkNumberOperand(expr.operator, left, right);
                 return (double)left - (double)right;
             case STAR:
+                checkNumberOperand(expr.operator, left, right);
                 return (double)left * (double)right;
             case SLASH:
+                checkNumberOperand(expr.operator, left, right);
                 return (double)left / (double)right;
             case PLUS:
+
                 if(left instanceof Double && right instanceof Double) {
                     return (double)left + (double)right;
                 }
@@ -51,7 +60,7 @@ public class Interpreter implements Expr.Visitor<Object> {
                     return (String)left + (String)right;
                 }
 
-            break;
+                throw new RuntimeError(expr.operator, "Operands must be two numbers or two strings");
         }
         return null;
     }
