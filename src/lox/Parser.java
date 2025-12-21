@@ -158,4 +158,22 @@ public class Parser {
             return null;
         }
     }
+
+    private Stmt statement() {
+        if(match(PRINT)) return PrintStatement();
+
+        return expressionStatement();
+    }
+
+    private Stmt PrintStatement() {
+        Expr value = expression();
+        consume(SEMICOLON, "Expect ';' after value.");
+        return new Stmt.Print(value);
+    }
+
+    private Stmt expressionStatement() {
+        Expr expr = expression();
+        consume(SEMICOLON, "Expect ';' after value.");
+        return new Stmt.Expression(expr);
+    }
 }
