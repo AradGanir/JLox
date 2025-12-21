@@ -117,6 +117,9 @@ public class Interpreter implements Expr.Visitor<Object> {
 
 
 
+    private void execute(Stmt statement){
+        statement.accept(this);
+    }
 
     void interpret(Expr expression) {
         try {
