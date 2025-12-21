@@ -50,7 +50,10 @@ public class Interpreter implements Expr.Visitor<Object> {
                 return (double)left * (double)right;
             case SLASH:
                 checkNumberOperand(expr.operator, left, right);
-                return (double)left / (double)right;
+                if(!checkZero(right)){
+                    return (double)left / (double)right;
+                }
+                throw new RuntimeError(expr.operator, "Cannot divide by zero.");
             case PLUS:
 
                 if(left instanceof Double && right instanceof Double) {
@@ -89,5 +92,9 @@ public class Interpreter implements Expr.Visitor<Object> {
     private void checkNumberOperand(Token operator, Object operand1, Object operand2) {
         if (operand1 instanceof Double && operand2 instanceof Double) return;
         throw new RuntimeError(operator, "Operands must be a number");
+    }
+
+    private boolean checkZero(Object operand2){
+        return operand2 instanceof Double;
     }
 }
