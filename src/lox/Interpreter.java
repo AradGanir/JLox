@@ -70,6 +70,17 @@ public class Interpreter implements Expr.Visitor<Object> {
         }
         return null;
     }
+    @Override public Void visitExpressionStmt(Stmt.Expression stmt){
+        evaluate(stmt.expression);
+        return null;
+    }
+
+    @Override
+    public Void visitPrintStmt(Stmt.Print stmt){
+        Object value = evaluate(stmt.expression);
+        System.out.print(stringify(value));
+        return null;
+    }
 
     private Object evaluate(Expr expr){
         return expr.accept(this);
