@@ -215,7 +215,8 @@ public class Scanner {
     }
 
     private void number(){
-        while(peek() != '.' && isDigit(peekNext())) {
+        while(isDigit(peek())) advance();
+        if(peek() == '.' && isDigit(peekNext())) {
             advance();
 
             while(isDigit(peek())) advance();
