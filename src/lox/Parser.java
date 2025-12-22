@@ -78,6 +78,29 @@ public class Parser {
         return tokens.get(current-1);
     }
 
+    private Stmt statement() {
+        if(match(PRINT)) return printStatement();
+        if(match(LEFT_BRACE)) return new Stmt.Block(Block());
+        if(match(IF)) return ifStatement();
+
+        return expressionStatement();
+    }
+
+    private Stmt ifStatement() {
+        consume(LEFT_PAREN, "Expect '(' after 'if'.");
+        Expr condition = expression();
+        consume(RIGHT_PAREN, "Expect ')' after 'if'.");
+
+        Stmt thenBranch = statement();
+        Stmt elseBranch = null;
+
+        if(match(ELSE)) {
+            elseBranch = statement();
+        }
+
+        return new Stmt.If(condition, thenBranch, elseBranch);
+    }
+
     private Expr expression() {
         return assignment();
     }
@@ -181,12 +204,7 @@ public class Parser {
         return statements;
     }
 
-    private Stmt statement() {
-        if(match(PRINT)) return PrintStatement();
-        if(match(LEFT_BRACE)) return new Stmt.Block(Block());
 
-        return expressionStatement();
-    }
 
     private List<Stmt> Block() {
         List<Stmt> statements = new ArrayList<>();
@@ -197,7 +215,7 @@ public class Parser {
         return statements;
     }
 
-    private Stmt PrintStatement() {
+    private Stmt printStatement() {
         Expr value = expression();
         consume(SEMICOLON, "Expect ';' after value.");
         return new Stmt.Print(value);
