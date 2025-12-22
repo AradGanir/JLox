@@ -27,6 +27,13 @@ public class Interpreter implements Expr.Visitor<Object>, Stmt.Visitor<Void> {
         return evaluate(expr.right);
     }
 
+    @Override public Void visitWhileStmt(Stmt.While stmt) {
+        while(isTruthy(evaluate(stmt.condition))) {
+            execute(stmt.body);
+        }
+        return null;
+    }
+
 
     @Override public Object visitLiteralExpr(Expr.Literal expr){
         return expr.value;
