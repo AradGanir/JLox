@@ -80,4 +80,8 @@ class RpnPrinter implements Expr.Visitor<String> {
 
         return expr.right.accept(this) + " " + operator;
     }
+
+    String print(Expr expr) {
+        return expr.accept(this);
+    }
 }
